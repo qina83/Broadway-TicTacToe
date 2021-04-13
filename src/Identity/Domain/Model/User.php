@@ -21,6 +21,13 @@ class User extends EventSourcedAggregateRoot
         return $this->id;
     }
 
+    public static function createUserWithId(UuidInterface $id, string $nickname): User
+    {
+        $user = new User();
+        $user->init($id, $nickname);
+        return $user;
+    }
+
     public static function createUser(string $nickname): User
     {
         $user = new User();

@@ -35,7 +35,7 @@ migrate:
 	docker-compose run --rm --no-deps php ./bin/console doctrine:migrations:migrate --no-interaction
 
 test:
-	docker-compose run --rm --no-deps php ./bin/phpunit --configuration phpunit.xml.dist --testsuite 'Project Test Suite'
+	docker-compose run --rm --no-deps php ./vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite 'Project Test Suite'
 
 test-single:
 	docker-compose run --rm --no-deps php ./bin/phpunit --configuration phpunit.xml.dist $(test)

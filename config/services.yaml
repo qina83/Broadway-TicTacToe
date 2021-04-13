@@ -1,15 +1,8 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
-
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
-parameters:
-
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -19,6 +12,7 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+            - '../src/Infrastructure/'
 
 
     # add more service definitions when explicit configuration is needed
@@ -26,11 +20,30 @@ services:
 
     Broadway\EventStore\EventStore: '@broadway.event_store'
     Broadway\EventHandling\EventBus: '@broadway.event_handling.event_bus'
+    Broadway\Serializer\Serializer: '@broadway.simple_interface_serializer'
+
+
+    app.identity.read_model.enable_user:
+        class: App\Identity\Application\ReadModel\ProjectorEnableUser
+        tags:
+            - { name: broadway.domain.event_listener }
+
+    app.identity.read_model.existing_user:
+        class: App\Identity\Application\ReadModel\ProjectorExistingUser
+        tags:
+            - { name: broadway.domain.event_listener }
+
 
     app.create_event_store:
-        class: App\Infrastructure\CreateEventStoreCommand
+        class: App\Shared\Infrastructure\CreateEventStoreCommand
         arguments:
             - "@doctrine.dbal.default_connection"
             - "@broadway.event_store"
         tags:
             - { name: console.command }
+
+
+
+
+
+

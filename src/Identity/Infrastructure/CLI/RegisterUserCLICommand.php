@@ -14,7 +14,6 @@ use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 class RegisterUserCLICommand extends Command
 {
-    protected static $defaultName = 'app:register-user';
     private MessageBusInterface $bus;
 
     public function __construct(MessageBusInterface $bus)
@@ -28,6 +27,7 @@ class RegisterUserCLICommand extends Command
     {
         parent::configure();
         $this
+            ->setName('app:register-user')
             // the short description shown while running "php bin/console list"
             ->setDescription('Creates a new user')
 
